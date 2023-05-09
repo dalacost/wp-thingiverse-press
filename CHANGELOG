@@ -1,0 +1,6 @@
+1.0 - May, 2023
+
+  * Fork from original [thingiverse-embed](https://github.com/martymcguire/wp-thingiverse-embed) wordpress plugin.
+  * Support for Wordpress 6.2
+  * New Styles
+  * New way for get data from Thingiverse API.
