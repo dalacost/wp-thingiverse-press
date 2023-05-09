@@ -4,8 +4,8 @@ Plugin Name: Thingiverse Press
 Plugin URI: 
 Description: Adds a [thingiverse] shortcode to embed <a href="https://www.thingiverse.com/">Thingiverse</a> Things in a post or page, and a Thingiverse Stream widget to embed streams in sidebars.
 Version: 1.0
-Author: 
-Author URI:
+Author: Lacosox.org
+Author URI: https://lacosox.org
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
