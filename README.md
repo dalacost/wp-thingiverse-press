@@ -1,4 +1,5 @@
-#thingverse-press
+thingverse-press
+===============================
 
 thingiverse-press is a fork from original [thingiverse-embed](https://github.com/martymcguire/wp-thingiverse-embed) wordpress plugin.
 tested at wordress 6.2 and support for PHP 8
@@ -15,13 +16,13 @@ To install:
 4. Embed some [thingiverse] shortcodes and Thingiverse Stream widgets!
 
 
-= Thing Embedding =
+## Thing Embedding
 
 For example, to embed [thing:1842](http://www.thingiverse.com/thing:1842) enter this in a post or page:
 
   [thingiverse thing=1842]
 
-= Stream Embedding =
+## Stream Embedding
 
 The Thingiverse Stream widget allows you to embed Thingiverse streams into your sidebars.  To use it, simply drag-and-drop the Thingiverse Stream widget to a sidebar and configure it.
 
@@ -41,7 +42,7 @@ There are two types of streams: *Global* and *User*.  *User* streams require you
 - `derivatives` content from http://www.thingiverse.com/derivatives
 - `made-things` content from http://www.thingiverse.com/made-things
 
-= Custom Formatting =
+## Custom Formatting
 
 Once installed, you can customize the look of your Things on the following files:
 
