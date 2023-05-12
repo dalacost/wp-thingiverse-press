@@ -12,9 +12,9 @@ class ThingiverseStream {
    *  * derivatives (/derivatives, /rss/derivatives)
    *  * instances (/made-things, /rss/instances)
    * User-specific:
-   *  * designed (/<User>/things, /rss/user:<id>)
+   *  * designed (/<User>/designs, /rss/user:<id>)
    *  * likes (/<User>/favorites, /rss/user:<id>/likes)
-   *  * made (/<User>/made, /rss/user:<id>/made)
+   *  * made (/<User>/makes, /rss/user:<id>/made)
    */
   public $title; // stream title
   public $url;

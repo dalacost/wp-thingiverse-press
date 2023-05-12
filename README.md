@@ -18,9 +18,9 @@ To install:
 
 ## Thing Embedding
 
-For example, to embed [thing:1842](http://www.thingiverse.com/thing:1842) enter this in a post or page:
+For example, to embed [thing:3678135](http://www.thingiverse.com/thing:3678135) enter this in a post or page:
 
-  [thingiverse thing=1842]
+  [thingiverse thing=3678135]
 
 ## Stream Embedding
 
@@ -30,9 +30,9 @@ There are two types of streams: *Global* and *User*.  *User* streams require you
 
 *User Streams*
 
-- `designed` - content from http://www.thingiverse.com/<User>/things
-- `like` - content from http://www.thingiverse.com/<User>/favorites
-- `made` - content from http://www.thingiverse.com/<User>/made
+- `designed` - content from http://www.thingiverse.com/< User >/designs
+- `like` - content from http://www.thingiverse.com/< User >/favorites
+- `made` - content from http://www.thingiverse.com/< User >/makes
 
 *Global Streams*
 
