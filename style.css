@@ -285,6 +285,7 @@
 }
 .thingiverse-thing-card-body-title a{
     color: #555;
+    text-transform: capitalize;
 }
 .thingiverse-thing-card-body-text{
     -webkit-box-orient: vertical;
@@ -302,4 +303,3 @@
     text-align: justify;
     margin: 10px;
 }
-

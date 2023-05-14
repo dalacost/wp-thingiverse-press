@@ -98,7 +98,7 @@ class ThingiverseStreamWidget extends WP_Widget {
 		    User Streams: <em>designed, likes, made</em><br />
             </p>
             <p>
-            	<label for="<?php echo $this->get_field_id('user'); ?>"><?php _e('User ID:'); ?> 
+            	<label for="<?php echo $this->get_field_id('user'); ?>"><?php _e('User Name:'); ?> 
             		<input class="widefat" id="<?php echo $this->get_field_id('user'); ?>" name="<?php echo $this->get_field_name('user'); ?>" type="text" value="<?php echo $user; ?>" />
             	</label>
             </p>

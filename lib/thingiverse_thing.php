@@ -22,41 +22,24 @@ class ThingiverseThing {
       // copy from the cache if it exists
       $thing_id = substr($thing_url, strrpos($thing_url, ':') + 1);
       $thing_cache_id = "thingiverse-press-thing-$thing_id";
-      $cached_thing = get_transient($thing_cache_id);
+      $cached_thing = Thingiverse::get_object_from_cache($thing_cache_id);
       if(false === $cached_thing){
-        $this->url = $thing_url;       
-        $authorization_header = 'Authorization: Bearer '.$this->get_authorization_token();
+        $this->url = $thing_url;
+        $authorization_header = 'Authorization: Bearer '.Thingiverse::get_authorization_token();
         $options  = ['http' => ['header' => $authorization_header]];
-	$context  = stream_context_create($options);
-	$json = file_get_contents('https://api.thingiverse.com/things/'.$thing_id, false, $context);
-	$obj = json_decode($json);
-	$this->initialize_from_json($obj);
-	
-        // cache for 1 hour
-        set_transient($thing_cache_id, $this, 3600);
+        $context  = stream_context_create($options);
+        $json = file_get_contents('https://api.thingiverse.com/things/'.$thing_id, false, $context);
+        $obj = json_decode($json);
+        $this->initialize_from_json($obj);
+        //cache
+        Thingiverse::log_message("Renewing KEY: ".$thing_cache_id);
+        set_transient($thing_cache_id, $this, Thingiverse::CACHE_TTL_THING);
       } else {
         foreach(get_object_vars($cached_thing) as $prop => $value){
           $this->$prop = $value;
         }
       }
     }
-  }
-  
-  function get_authorization_token(){
-  	$cached_token = get_transient('thingiverse_authorization_token');
-  	if(false === $cached_token){
-  		$js = file_get_contents('https://cdn.thingiverse.com/site/js/app.bundle.js');
-  		preg_match_all('/,x="\w+/', $js, $matches);
-		$text = $matches[0];
-		$token = substr($text[0],strrpos($text[0], 'x=')+3);
-  		error_log(print_r($token, TRUE)); 
-  		// cache 1 day
-        	set_transient('thingiverse_authorization_token', $token, 86400);
-        	return $token;
-  	}
-  	else{
-  		return $cached_token;
-  	}
   }
   
   function initialize_from_json($obj) {

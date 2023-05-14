@@ -67,8 +67,8 @@ class ThingiverseStream {
   }
 
   function initialize_stream_designed() {
-//    $this->user_id = Thingiverse::user_id_from_name($this->user);
-    $this->user_id = $this->user;
+    $this->user_id = Thingiverse::user_id_from_name($this->user);
+ //   $this->user_id = $this->user;
     $this->url = Thingiverse::BASE_URL . "/rss/user:$this->user_id";
     $this->title = "Newest Things";
     $this->load_stream_from_rss_url();
@@ -96,11 +96,11 @@ class ThingiverseStream {
     $dom = new DomDocument("1.0");
     // cache key - chop off "http://www.thingiverse.com" and sluggify
     $t_key = "thingiverse-stream-" . sanitize_title(substr($url,27));
-    $dom_str = get_transient($t_key);
+    $dom_str = Thingiverse::get_object_from_cache($t_key);
     if(false === $dom_str){
       @$dom->load($url); // use @ to suppress parser warnings
       $xml_data = $dom->saveXML();
-      set_transient($t_key, $xml_data, 3600);
+      set_transient($t_key, $xml_data, Thingiverse::CACHE_TTL_WIDGET);
     } else {
       @$dom->loadXML($dom_str); // use @ to suppress parser warnings
     }
