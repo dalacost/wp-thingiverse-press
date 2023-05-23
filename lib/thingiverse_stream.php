@@ -68,15 +68,13 @@ class ThingiverseStream {
 
   function initialize_stream_designed() {
     $this->user_id = Thingiverse::user_id_from_name($this->user);
- //   $this->user_id = $this->user;
     $this->url = Thingiverse::BASE_URL . "/rss/user:$this->user_id";
     $this->title = "Newest Things";
     $this->load_stream_from_rss_url();
   }
 
   function initialize_stream_likes() {
-//    $this->user_id = Thingiverse::user_id_from_name($this->user);
-    $this->user_id = $this->user;
+    $this->user_id = Thingiverse::user_id_from_name($this->user);
     $this->url = Thingiverse::BASE_URL . "/rss/user:$this->user_id/likes";
     $this->title = "Newest Likes";
     $this->load_stream_from_rss_url();
@@ -85,9 +83,10 @@ class ThingiverseStream {
   // Made things RSS has the thing creator, not the instance creator as author.
   // Also shows the original creator's picture. Fall back to HTML parsing.
   function initialize_stream_made() {
-    $this->url = Thingiverse::BASE_URL . "/$this->user/made";
+    $this->user_id = Thingiverse::user_id_from_name($this->user);
+    $this->url = Thingiverse::BASE_URL . "/rss/user:$this->user_id/made";
     $this->title = "Newest Instances";
-    $this->load_stream_from_made_url();
+    $this->load_stream_from_rss_url();
   }
 
   // Returns a DOM object for the specified URL. Pulls it from the transient
@@ -119,12 +118,6 @@ class ThingiverseStream {
     $this->parse_thing_instances_from_html_dom($dom);
   }
 
-  function load_stream_from_made_url() {
-    $dom = $this->get_dom_for_url($this->url);
-    // FIXME: check for parse error. set some kind of thing status!
-    $this->parse_thing_mades_from_html_dom($dom);
-  }
-
   function parse_things_from_rss_dom($dom) {
     $xp = new DomXpath($dom);
     $thing_nodes = $xp->query("//item");
@@ -142,25 +135,5 @@ class ThingiverseStream {
       array_push($this->things, $thing);
     }
   }
-
-  function parse_thing_mades_from_html_dom($dom) {
-    $xp = new DomXpath($dom);
-    $thing_nodes = $xp->query("//div[@class=\"thing_float\"]");
-    foreach ( $thing_nodes as $thing_node ) {
-      $thing = ThingiverseThing::from_html_made_dom($thing_node);
-      array_push($this->things, $thing);
-    }
-  }
-
-  /* TODO: delete me if not needed
-  private function nodeContent ( $n, $outer = true ) {
-      $d = new DOMDocument('1.0');
-      $b = $d->importNode($n->cloneNode(true),true);
-      $d->appendChild($b); $h = $d->saveHTML();
-      // remove outter tags
-      if (!$outer) $h = substr($h,strpos($h,'>')+1,-(strlen($n->nodeName)+4));
-      return $h . "\n";
-  } 
-  */
 }
 ?>
