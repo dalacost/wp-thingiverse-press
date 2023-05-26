@@ -2,8 +2,9 @@
 
 class Thingiverse {
    
-  const BASE_URL = "https://www.thingiverse.com";
-  const TOKEN_URL = "https://cdn.thingiverse.com/site/js/app.bundle.js";
+  const BASE_URL          = "https://www.thingiverse.com";
+  const BASE_API_URL      = "https://api.thingiverse.com";
+  const TOKEN_URL         = "https://cdn.thingiverse.com/site/js/app.bundle.js";
   const CACHE_TTL_TOKEN   = 86400;    //24 h
   const CACHE_TTL_THING   = 3600;     //1 h
   const CACHE_TTL_WIDGET  = 3600;     //1 h
@@ -13,16 +14,13 @@ class Thingiverse {
 
   public static function user_id_from_name( $user ) {
 
-    $user_key = 'user_id_from_name_'.$user;
+    $user_key = 'thingiverse-user-id-from-name-'.$user;
 
     $cached_user_id_from_name = Thingiverse::get_object_from_cache($user_key);
 
   	if(false === $cached_user_id_from_name or $cached_user_id_from_name === ""){
-      $authorization_header = 'Authorization: Bearer '.Thingiverse::get_authorization_token();
-      $options  = ['http' => ['header' => $authorization_header]];
-      $context  = stream_context_create($options);
-      $json = file_get_contents('https://api.thingiverse.com/users/'.$user, false, $context);
-      $obj = json_decode($json);
+
+      $obj = Thingiverse::get_authorized_url_json('https://api.thingiverse.com/users/'.$user);
       $id_from_name = $obj->id;
       Thingiverse::log_message("Renewing KEY: ".$user_key."=".$id_from_name);
       set_transient($user_key, $id_from_name, Thingiverse::CACHE_TTL_USER_ID);
@@ -36,7 +34,7 @@ class Thingiverse {
 
   public static function get_authorization_token(){
     
-    $cached_token_key = 'thingiverse_authorization_token';
+    $cached_token_key = 'thingiverse-authorization-token';
   	$cached_token = Thingiverse::get_object_from_cache($cached_token_key);
   	if(false === $cached_token){
   		$js = file_get_contents(Thingiverse::TOKEN_URL);
@@ -50,6 +48,18 @@ class Thingiverse {
   	else{
   		return $cached_token;
   	}
+  }
+
+  //Returns a Json object
+  public static function get_authorized_url_json($url){
+
+    $authorization_header = 'Authorization: Bearer '.Thingiverse::get_authorization_token();
+    $options  = ['http' => ['header' => $authorization_header]];
+    $context  = stream_context_create($options);
+    $json = file_get_contents($url, false, $context);
+    $obj = json_decode($json);
+
+    return $obj;
   }
 
   public static function get_object_from_cache($key){

@@ -25,11 +25,7 @@ class ThingiverseThing {
       $cached_thing = Thingiverse::get_object_from_cache($thing_cache_id);
       if(false === $cached_thing){
         $this->url = $thing_url;
-        $authorization_header = 'Authorization: Bearer '.Thingiverse::get_authorization_token();
-        $options  = ['http' => ['header' => $authorization_header]];
-        $context  = stream_context_create($options);
-        $json = file_get_contents('https://api.thingiverse.com/things/'.$thing_id, false, $context);
-        $obj = json_decode($json);
+        $obj = Thingiverse::get_authorized_url_json('https://api.thingiverse.com/things/'.$thing_id);
         $this->initialize_from_json($obj);
         //cache
         Thingiverse::log_message("Renewing KEY: ".$thing_cache_id);
@@ -44,16 +40,16 @@ class ThingiverseThing {
   
   function initialize_from_json($obj) {
 
-  	$this->title 		= $obj-> name;
-  	$this->creator_url 	= $obj-> creator -> public_url;
-  	$this->creator		= $obj-> creator -> name;
-  	$this->creator_img	= $obj-> creator -> thumbnail;
-  	$this->main_image 	= $obj-> thumbnail;
-  	$this->description	= $obj-> description;
-  	$this->instructions	= $obj-> instructions;
-  	$this->like_count	= $obj-> like_count;
-  	$this->create_date	= $obj-> added;
-  	
+  	@$this->title 		    = $obj-> name;
+  	@$this->creator_url 	= $obj-> creator -> public_url;
+  	@$this->creator		    = $obj-> creator -> name;
+  	@$this->creator_img	  = $obj-> creator -> thumbnail;
+  	@$this->main_image 	  = $obj-> thumbnail;
+  	@$this->description	  = $obj-> description;
+  	@$this->instructions	= $obj-> instructions;
+  	@$this->like_count	  = $obj-> like_count;
+  	@$this->create_date	  = $obj-> added;
+  	@$this->url	          = $obj-> public_url;
   }
 
   public static function from_rss_item_dom( $dom ) {

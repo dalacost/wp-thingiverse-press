@@ -20,6 +20,7 @@ class ThingiverseStreamWidget extends WP_Widget {
 		);
 	}
 	
+  
 
     /** @see WP_Widget::widget */
     function widget($args, $instance) {   
@@ -95,7 +96,7 @@ class ThingiverseStreamWidget extends WP_Widget {
             	</label>
             	<br />
 		    Global Streams: <em>newest, featured, popular, derivatives, instances</em><br />
-		    User Streams: <em>designed, likes, made</em><br />
+		    User Streams: <em>designed, likes, made, favorites, collections</em><br />
             </p>
             <p>
             	<label for="<?php echo $this->get_field_id('user'); ?>"><?php _e('User Name:'); ?> 

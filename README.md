@@ -31,8 +31,10 @@ There are two types of streams: *Global* and *User*.  *User* streams require you
 *User Streams*
 
 - `designed` - content from http://www.thingiverse.com/< User >/designs
-- `like` - content from http://www.thingiverse.com/< User >/favorites
+- `like` - content from http://www.thingiverse.com/< User >/likes
 - `made` - content from http://www.thingiverse.com/< User >/makes
+- `favorites` - content from http://www.thingiverse.com/< User >/favorites
+- `collections` - content from http://www.thingiverse.com/< User >/collections
 
 *Global Streams*
 

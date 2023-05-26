@@ -1,3 +1,6 @@
+1.1 - May, 2023
+  * "makes", "favorites" and "collections" lists are getted from Thingiverse API
+
 1.0 - May, 2023
 
   * Fork from original [thingiverse-embed](https://github.com/martymcguire/wp-thingiverse-embed) wordpress plugin.

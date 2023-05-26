@@ -15,6 +15,8 @@ class ThingiverseStream {
    *  * designed (/<User>/designs, /rss/user:<id>)
    *  * likes (/<User>/favorites, /rss/user:<id>/likes)
    *  * made (/<User>/makes, /rss/user:<id>/made)
+   *  * favorites (/<User>/favorites)
+   *  * collections (/<User>/collections)
    */
   public $title; // stream title
   public $url;
@@ -25,7 +27,7 @@ class ThingiverseStream {
 
   function __construct( $type = "newest", $user = null ) {
     $this->user = $user;
-    $this->user_url = (is_null($user) ? null : Thingiverse::BASE_URL . "/user:$user");
+    $this->user_url = (is_null($user) ? null : Thingiverse::BASE_URL . "/$user");
     $method_name = "initialize_stream_$type";
     if(method_exists($this, $method_name)){
       call_user_func( array($this, $method_name) );
@@ -80,13 +82,78 @@ class ThingiverseStream {
     $this->load_stream_from_rss_url();
   }
 
-  // Made things RSS has the thing creator, not the instance creator as author.
-  // Also shows the original creator's picture. Fall back to HTML parsing.
   function initialize_stream_made() {
-    $this->user_id = Thingiverse::user_id_from_name($this->user);
-    $this->url = Thingiverse::BASE_URL . "/rss/user:$this->user_id/made";
-    $this->title = "Newest Instances";
-    $this->load_stream_from_rss_url();
+
+    $this->user_url = (is_null($this->user) ? null : Thingiverse::BASE_URL . "/$this->user/makes");
+    $this->url = Thingiverse::BASE_API_URL . "/users/$this->user/search/?type=makes&sort=newest";
+    $cache_id = "thingiverse-press-stream-makes-$this->user";
+    $cached_thing = Thingiverse::get_object_from_cache($cache_id);
+
+    if(false === $cached_thing){
+      $obj = Thingiverse::get_authorized_url_json($this->url);
+
+      foreach($obj->hits as $key => $lock)
+      {
+        $thing = new ThingiverseThing();
+        $thing -> initialize_from_json($lock);
+        array_push($this->things, $thing);
+      }
+
+      Thingiverse::log_message("Renewing KEY: ".$cache_id);
+      set_transient($cache_id, $this->things, Thingiverse::CACHE_TTL_WIDGET);
+    } else {
+      $this -> things = $cached_thing;
+    }
+  }
+
+
+  function initialize_stream_collections() {
+
+    $this->user_url = (is_null($this->user) ? null : Thingiverse::BASE_URL . "/$this->user/collections");
+    $this->url = Thingiverse::BASE_API_URL . "/users/$this->user/search/?type=collections&sort=newest";
+    $cache_id = "thingiverse-press-stream-collections-$this->user";
+    $cached_thing = Thingiverse::get_object_from_cache($cache_id);
+
+    if(false === $cached_thing){
+      $obj = Thingiverse::get_authorized_url_json($this->url);
+
+      foreach($obj->hits as $key => $lock)
+      {
+        $thing = new ThingiverseThing();
+        $thing -> initialize_from_json($lock);
+        $thing -> url = $lock -> absolute_url;
+        array_push($this->things, $thing);
+      }
+
+      Thingiverse::log_message("Renewing KEY: ".$cache_id);
+      set_transient($cache_id, $this->things, Thingiverse::CACHE_TTL_WIDGET);
+    } else {
+      $this -> things = $cached_thing;
+    }
+  }
+
+
+  function initialize_stream_favorites() {
+    $this->user_url = (is_null($this->user) ? null : Thingiverse::BASE_URL . "/$this->user/favorites");
+    $this->url = Thingiverse::BASE_API_URL . "/users/$this->user/favorites";
+    $cache_id = "thingiverse-press-stream-favorites-$this->user";
+    $cached_thing = Thingiverse::get_object_from_cache($cache_id);
+
+    if(false === $cached_thing){
+      $obj = Thingiverse::get_authorized_url_json($this->url);
+
+      foreach($obj as $key => $lock)
+      {
+        $thing = new ThingiverseThing();
+        $thing -> initialize_from_json($lock);
+        array_push($this->things, $thing);
+      }
+
+      Thingiverse::log_message("Renewing KEY: ".$cache_id);
+      set_transient($cache_id, $this->things, Thingiverse::CACHE_TTL_WIDGET);
+    } else {
+      $this -> things = $cached_thing;
+    }
   }
 
   // Returns a DOM object for the specified URL. Pulls it from the transient
@@ -135,5 +202,6 @@ class ThingiverseStream {
       array_push($this->things, $thing);
     }
   }
+
 }
 ?>
