@@ -9,8 +9,8 @@ class Thingiverse {
   const CACHE_TTL_THING   = 3600;     //1 h
   const CACHE_TTL_WIDGET  = 3600;     //1 h
   const CACHE_TTL_USER_ID = 2592000;  //1 month
-  const CACHE_ENABLE      = false; // for disable all cache for debug only
-  const DEBUG             = true;  // for debug
+  const CACHE_ENABLE      = true; // for disable all cache for debug only
+  const DEBUG             = false;  // for debug
 
   public static function user_id_from_name( $user ) {
 
