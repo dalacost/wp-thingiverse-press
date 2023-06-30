@@ -9,8 +9,8 @@ class Thingiverse {
   const CACHE_TTL_THING   = 3600;     //1 h
   const CACHE_TTL_WIDGET  = 3600;     //1 h
   const CACHE_TTL_USER_ID = 2592000;  //1 month
-  const CACHE_ENABLE      = true; // for disable all cache for debug only
-  const DEBUG             = false;  // for debug
+  const CACHE_ENABLE      = false; // for disable all cache for debug only
+  const DEBUG             = true;  // for debug
 
   public static function user_id_from_name( $user ) {
 
@@ -38,9 +38,9 @@ class Thingiverse {
   	$cached_token = Thingiverse::get_object_from_cache($cached_token_key);
   	if(false === $cached_token){
   		$js = file_get_contents(Thingiverse::TOKEN_URL);
-  		preg_match_all('/,x="\w+/', $js, $matches);
+  		preg_match_all('/,u="[a-zA-Z0-9]*[a-zA-Z][0-9][a-zA-Z0-9]*+"/', $js, $matches);
 		  $text = $matches[0];
-		  $token = substr($text[0],strrpos($text[0], 'x=')+3);
+		  $token = substr($text[0],strrpos($text[0], 'u=')+3,-1);
       Thingiverse::log_message("Renewing KEY: ".$cached_token_key."=".$token);
       set_transient($cached_token_key, $token, Thingiverse::CACHE_TTL_TOKEN);
       return $token;
