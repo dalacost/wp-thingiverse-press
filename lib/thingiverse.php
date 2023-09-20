@@ -38,9 +38,9 @@ class Thingiverse {
   	$cached_token = Thingiverse::get_object_from_cache($cached_token_key);
   	if(false === $cached_token){
   		$js = file_get_contents(Thingiverse::TOKEN_URL);
-  		preg_match_all('/,u="[a-zA-Z0-9]*[a-zA-Z][0-9][a-zA-Z0-9]*+"/', $js, $matches);
+  		preg_match_all('/="[a-zA-Z0-9]*[a-zA-Z][0-9][a-zA-Z0-9]*+"/', $js, $matches);
 		  $text = $matches[0];
-		  $token = substr($text[0],strrpos($text[0], 'u=')+3,-1);
+		  $token = substr($text[0],strrpos($text[0], '=')+2,-1);
       Thingiverse::log_message("Renewing KEY: ".$cached_token_key."=".$token);
       set_transient($cached_token_key, $token, Thingiverse::CACHE_TTL_TOKEN);
       return $token;
