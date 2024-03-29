@@ -53,7 +53,10 @@ class Thingiverse {
   //Returns a Json object
   public static function get_authorized_url_json($url){
 
-    $authorization_header = 'Authorization: Bearer '.Thingiverse::get_authorization_token();
+    $authorization_header = array(
+                          'Authorization: Bearer '.Thingiverse::get_authorization_token(),
+                          'Referer: '.Thingiverse::BASE_URL
+                          );
     $options  = ['http' => ['header' => $authorization_header]];
     $context  = stream_context_create($options);
     $json = file_get_contents($url, false, $context);
