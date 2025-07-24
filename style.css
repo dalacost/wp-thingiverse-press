@@ -17,6 +17,8 @@
 .tv-stream-thing img {
   width: 65px;
   border-radius: 5px;
+  height: 65px;
+  object-fit: cover;
 }
 .tv-stream-thing-last img {
 	filter: blur(0.2rem) grayscale(100%);
@@ -33,6 +35,8 @@
 .tv-stream-thing-last span img{
 	filter: none;
 	width:24px;
+    height: 24px;
+    object-fit: cover;
 }
 
 .thingiverse-thing-card {

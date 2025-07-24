@@ -72,7 +72,8 @@ class ThingiverseStreamWidget extends WP_Widget {
       $instance['type'] = strip_tags($new_instance['type']);
       $instance['user'] = strip_tags($new_instance['user']);
       $instance['max_items'] = strip_tags($new_instance['max_items']);
-      $instance['show_see_more_at_last'] = strip_tags($new_instance['show_see_more_at_last']);
+      $instance['show_see_more_at_last'] = isset($new_instance['show_see_more_at_last']) ? strip_tags($new_instance['show_see_more_at_last']) : '';
+
       return $instance;
     }
 
