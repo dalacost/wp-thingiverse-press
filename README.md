@@ -2,7 +2,7 @@ thingverse-press
 ===============================
 
 thingiverse-press is a fork from original [thingiverse-embed](https://github.com/martymcguire/wp-thingiverse-embed) wordpress plugin.
-tested at wordress 6.2 and support for PHP 8
+tested at wordress 6.9 and support for PHP 8
 
 
 This plugin let you embed Thingiverse Things into your posts and pages, and embed a Thingiverse Stream widget into your
