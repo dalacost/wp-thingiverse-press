@@ -25,7 +25,7 @@ class ThingiverseThing {
       $cached_thing = Thingiverse::get_object_from_cache($thing_cache_id);
       if(false === $cached_thing){
         $this->url = $thing_url;
-        $obj = Thingiverse::get_authorized_url_json('https://api.thingiverse.com/things/'.$thing_id);
+        $obj = Thingiverse::get_authorized_url_json('https://www.thingiverse.com/api/v2/things/'.$thing_id.'/complete');
         $this->initialize_from_json($obj);
         //cache
         Thingiverse::log_message("Renewing KEY: ".$thing_cache_id);
@@ -45,10 +45,10 @@ class ThingiverseThing {
   	@$this->creator		    = $obj-> creator -> name;
   	@$this->creator_img	  = $obj-> creator -> thumbnail;
   	@$this->main_image 	  = $obj-> thumbnail;
-  	@$this->description	  = $obj-> description;
+  	@$this->description	  = $obj-> description_html;
   	@$this->instructions	= $obj-> instructions;
   	@$this->like_count	  = $obj-> like_count;
-  	@$this->create_date	  = $obj-> added;
+  	@$this->create_date	  = $obj-> created_at;
   	@$this->url	          = $obj-> public_url;
   }
 

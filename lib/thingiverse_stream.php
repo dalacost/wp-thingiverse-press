@@ -36,12 +36,17 @@ class ThingiverseStream {
     }
   }
 
-    private function initialize_stream_common($url, $cache_id, $is_hits = true) {
+  private function initialize_stream_common($url, $cache_id, $is_hits = true, $auth_by_md5 = false) {
 
     $cached_thing = Thingiverse::get_object_from_cache($cache_id);
 
     if (false === $cached_thing) {
-      $obj = Thingiverse::get_authorized_url_json($url);
+      if($auth_by_md5){
+        $obj = Thingiverse::get_authorized_url_json($url, auth_by_md5:true);
+      }else{
+        $obj = Thingiverse::get_authorized_url_json($url);
+      }
+      
       $items = $is_hits ? $obj->hits : $obj;
 
       foreach ($items as $key => $lock)
@@ -99,35 +104,35 @@ class ThingiverseStream {
     $this->user_url = (is_null($this->user) ? null : Thingiverse::BASE_URL . "/$this->user/designs");
     $this->url = Thingiverse::BASE_API_URL . "/users/$this->user/search/?type=designs&sort=newest";
     $cache_id = "thingiverse-press-stream-designs-$this->user";
-    $this->initialize_stream_common($this->url,$cache_id,true);
+    $this->initialize_stream_common($this->url,$cache_id,true, auth_by_md5:true);
   }
 
   function initialize_stream_likes() {
     $this->user_url = (is_null($this->user) ? null : Thingiverse::BASE_URL . "/$this->user/likes");
     $this->url = Thingiverse::BASE_URL . "/api/users/$this->user/likes";
     $cache_id = "thingiverse-press-stream-likes-$this->user";
-    $this->initialize_stream_common($this->url,$cache_id,false);
+    $this->initialize_stream_common($this->url,$cache_id,false, auth_by_md5:true);
   }
 
   function initialize_stream_made() {
     $this->user_url = (is_null($this->user) ? null : Thingiverse::BASE_URL . "/$this->user/makes");
     $this->url = Thingiverse::BASE_API_URL . "/users/$this->user/search/?type=makes&sort=newest";
     $cache_id = "thingiverse-press-stream-makes-$this->user";
-    $this->initialize_stream_common($this->url,$cache_id,true);
+    $this->initialize_stream_common($this->url,$cache_id,true, auth_by_md5:true);
   }
 
   function initialize_stream_collections() {
     $this->user_url = (is_null($this->user) ? null : Thingiverse::BASE_URL . "/$this->user/collections");
     $this->url = Thingiverse::BASE_API_URL . "/users/$this->user/search/?type=collections&sort=newest";
     $cache_id = "thingiverse-press-stream-collections-$this->user";
-    $this->initialize_stream_common($this->url,$cache_id,true);
+    $this->initialize_stream_common($this->url,$cache_id,true, auth_by_md5:true);
   }
 
   function initialize_stream_favorites() {
     $this->user_url = (is_null($this->user) ? null : Thingiverse::BASE_URL . "/$this->user/favorites");
     $this->url = Thingiverse::BASE_API_URL . "/users/$this->user/favorites";
     $cache_id = "thingiverse-press-stream-favorites-$this->user";
-    $this->initialize_stream_common($this->url,$cache_id,false);
+    $this->initialize_stream_common($this->url,$cache_id,false, auth_by_md5:true);
   }
 }
 ?>
